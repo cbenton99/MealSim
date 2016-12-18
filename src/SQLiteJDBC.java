@@ -3,6 +3,8 @@
 //Run this class to create the database
 //and populate it with csv files
 ////////////////////////////////////////
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.*;
 
 public class SQLiteJDBC
@@ -25,13 +27,13 @@ public class SQLiteJDBC
     String sql = null;
     try {
       Class.forName("org.sqlite.JDBC");
-      System.out.println("Opened database successfully");
-
+      
       //Ingredients table
       stmt = c.createStatement();
-      sql = "CREATE TABLE INGREDIENTS " +
-            "(ID INT PRIMARY KEY     NOT NULL," +
-            " NAME           TEXT    NOT NULL, " + 
+      sql = "CREATE TABLE INGREDIENT " +
+            "(ID INTEGER PRIMARY KEY 	 AUTOINCREMENT," +
+            " NAME           TEXT    NOT NULL, " +
+            " TYPE           TEXT    NOT NULL, " +
             " BASEAMOUNT     REAL    NOT NULL, " + 
             " MEASUREMENT    TEXT    NOT NULL, " +
             " CALORIES       REAL    NOT NULL, " +
@@ -117,11 +119,42 @@ public class SQLiteJDBC
       stmt.executeUpdate(sql);
       stmt.close();
       
-      c.close();
     } catch ( Exception e ) {
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );
       System.exit(0);
     }
     System.out.println("Tables created successfully");
+    try {
+		    //pull the ingredients out of the CSV
+		    BufferedReader br = new BufferedReader(new FileReader("Ingredients.csv"));
+		    String line;
+		    while ( (line = br.readLine()) != null)
+		    {
+		    	stmt = c.createStatement();
+		        String[] values = line.split(",");
+		        //Convert String to right type. Integer, double, date etc.
+		        stmt.executeUpdate("INSERT INTO INGREDIENT" 
+		        					+ "(NAME, TYPE, BASEAMOUNT, MEASUREMENT, CALORIES,"
+		        					+ "TOTALFAT, SATURATEDFAT, TRANSFAT, POLYFAT, MONOFAT, "
+		        					+ "SODIUM, CARBS, FIBER, SUGAR, PROTEIN)" 
+		        					+ " VALUES('"
+		        					+ values[0] + "','" + values[1] + "'," + values[2]
+		        					+ ",'" + values[3] + "'," + values[4]
+		        					+ "," + values[5] + "," + values[6]
+		        					+ "," + values[7] + "," + values[8]
+		        					+ "," + values[9] + "," + values[10]
+		        					+ "," + values[11] + "," + values[12]
+		        					+ "," + values[13] + "," + values[14] 
+		        					+ ")");
+		        //Use a PeparedStatemant, it´s easier and safer 
+		    }
+		    br.close();
+		    c.close();
+    	} catch ( Exception e ) {
+	        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	        System.exit(0);
+	    }
+    
+    	System.out.println("CSV inserted into tables successfully.");
   }
 }
