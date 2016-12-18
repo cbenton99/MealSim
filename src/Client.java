@@ -50,13 +50,9 @@ public class Client {
 		return arr;
 	}
 	
-	public Object[][] getRecipeList() { 
-		Object[][] arr = new Object[ingredients.size()][];
-		for(int i=0; i<ingredients.size(); i++) {
-			arr[i] = ingredients.get(i).toRecipeArray();
-		}
-		return arr;
-	}
+
+	
+	public Recipe newRecipe() { return new Recipe(); }
 	
 	public void addIngredient(Ingredient i) {
 		ingredients.add(i);

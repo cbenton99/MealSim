@@ -21,6 +21,7 @@ public class Recipe {
 	private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
 
 	public Recipe() { 
+		/*
 		File ingredientFile = new File("Ingredients.csv");
 		Scanner in = null;
 		try { in = new Scanner(ingredientFile);
@@ -35,7 +36,7 @@ public class Recipe {
 			Ingredient i = new Ingredient(s);
 			ingredients.add(i);
 		}
-		
+		*/
 	}
 	
 	
@@ -74,4 +75,14 @@ public class Recipe {
 	public void setSugar(int n) { this.sugar = n; }
 	public void setProtien(int n) { this.protien = n; }
 	public void setPrice(double n) { this.price = n; }
+	
+	public Object[][] getRecipeList() { 
+		Object[][] arr = new Object[ingredients.size()][];
+		for(int i=0; i<ingredients.size(); i++) {
+			arr[i] = ingredients.get(i).toRecipeArray();
+		}
+		return arr;
+	}
+	
+
 }

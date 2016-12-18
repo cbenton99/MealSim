@@ -21,11 +21,19 @@ public class GUI extends JFrame {
 					   recipePolyFat, recipeCarbs, recipeFiber,
 					   recipeSugar, recipeProtein, recipeSodium,
 					   recipePrice;
-	private JComboBox recipeType;
+	private JTextField mealName, mealCalories, mealTotalFat,
+					   mealTransFat, mealSatFat, mealMonoFat,
+					   mealPolyFat, mealCarbs, mealFiber,
+					   mealSugar, mealProtein, mealSodium,
+					   mealPrice;
+	private JComboBox recipeType, mealType;
 	private JButton addIngredient, editIngredient, deleteIngredient, updateIngredient;
 	private JButton newRecipe, addRecipe, removeRecipe, loadRecipe, recipeSubmit;
-	private DefaultTableModel ingredientModel, recipeShortModel, recipeRecipeModel;
-	private JTable ingredientList, recipeShortList, recipeRecipeList;
+	private JButton mealNew, mealAdd, mealRemove, mealLoad, mealSubmit;
+	private DefaultTableModel ingredientModel, recipeShortModel, recipeLongModel, 
+							  mealShortModel, mealLongModel;
+	private JTable ingredientList, recipeShortList, recipeLongList, mealShortList,
+				   mealLongList;
 	
 	
 	//initialize "database" (populate data)
@@ -37,8 +45,10 @@ public class GUI extends JFrame {
 	
 	//headers
 	private Object[] ingredientHeaders = new Object[6];
-	private Object[] recipeShortHeaders = new Object[6];
-	private Object[] recipeRecipeHeaders = new Object[6];
+	private Object[] recipeShortHeaders = new Object[2];
+	private Object[] recipeLongHeaders = new Object[5];
+	private Object[] mealShortHeaders = new Object[2];
+	private Object[] mealLongHeaders = new Object[5];
 	
 	//sets of text boxes
 	private ArrayList<JTextField> ingredientTextFields = new ArrayList<JTextField>();
@@ -349,6 +359,7 @@ public class GUI extends JFrame {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void buildRecipeTab(Container rTab) {
 		//initialize layout and constraints
 		rTab.setLayout(new GridBagLayout());
@@ -360,11 +371,11 @@ public class GUI extends JFrame {
 		
 		recipeShortHeaders[0] = "Name";
 		recipeShortHeaders[1] = "Type";
-		recipeRecipeHeaders[0] = "Name";
-		recipeRecipeHeaders[1] = "Multiplier";
-		recipeRecipeHeaders[2] = "Base Amount";
-		recipeRecipeHeaders[3] = "Measurement";
-		recipeRecipeHeaders[4] = "Calories";
+		recipeLongHeaders[0] = "Name";
+		recipeLongHeaders[1] = "Multiplier";
+		recipeLongHeaders[2] = "Base Amount";
+		recipeLongHeaders[3] = "Measurement";
+		recipeLongHeaders[4] = "Calories";
 		
 		
 		
@@ -439,35 +450,36 @@ public class GUI extends JFrame {
 	    
 		//recipeRecipeList
 		//display ingredients in JTable
-	    recipeRecipeModel = new DefaultTableModel(client.getRecipeList(), recipeRecipeHeaders);
-		recipeRecipeList = new JTable() {
+	    Recipe recipeList = client.newRecipe();
+	    recipeLongModel = new DefaultTableModel(recipeList.getRecipeList(), recipeLongHeaders);
+		recipeLongList = new JTable() {
     				public boolean isCellEditable(int row, int column) {                
     					return false;               
     				};
     		};
-    		recipeRecipeList.setModel(recipeRecipeModel);
-		TableRowSorter<DefaultTableModel> sort2 = new TableRowSorter<DefaultTableModel>(recipeRecipeModel);
-		recipeRecipeList.setRowSorter(sort2);
-		recipeRecipeList.addMouseListener(new IngredientListListener());
-		recipeRecipeList.addKeyListener(new IngredientListListener2());
-		recipeRecipeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		recipeRecipeList.getColumnModel().getColumn(0).setPreferredWidth(100);
-		recipeRecipeList.getColumnModel().getColumn(1).setPreferredWidth(70);
-		recipeRecipeList.setPreferredScrollableViewportSize(new Dimension(170,360));
+    		recipeLongList.setModel(recipeLongModel);
+		TableRowSorter<DefaultTableModel> sort2 = new TableRowSorter<DefaultTableModel>(recipeLongModel);
+		recipeLongList.setRowSorter(sort2);
+		recipeLongList.addMouseListener(new IngredientListListener());
+		recipeLongList.addKeyListener(new IngredientListListener2());
+		recipeLongList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		recipeLongList.getColumnModel().getColumn(0).setPreferredWidth(100);
+		recipeLongList.getColumnModel().getColumn(1).setPreferredWidth(70);
+		recipeLongList.setPreferredScrollableViewportSize(new Dimension(170,360));
 		c.gridwidth = 3;
 		c.gridheight = 4;
 		c.weightx = 1;
 		c.weighty = 1;
 		c.gridx = 2;
 		c.gridy = 0;
-		JScrollPane scroll2 = new JScrollPane(recipeRecipeList);
+		JScrollPane scroll2 = new JScrollPane(recipeLongList);
 		
 		rTab.add(scroll2, c);
 		
 		//recipeName field
 		recipeName = new JTextField();
 		recipeName.setBorder(BorderFactory.createTitledBorder("Recipe Name"));
-		recipeName.setEditable(false);
+		recipeName.setEditable(true);
 		recipeName.setHorizontalAlignment(JTextField.CENTER);
 	    recipeName.setPreferredSize(single);
 	    c.gridwidth = 1;
@@ -481,6 +493,7 @@ public class GUI extends JFrame {
 	    recipeType = new JComboBox(recipeTypes);
 	    recipeType.setBorder(BorderFactory.createTitledBorder("Type"));
 	    recipeType.setEditable(false);
+	    recipeType.setSelectedIndex(-1);
 	    recipeType.setPreferredSize(single);
 	    c.gridx = 0;
 	    c.gridy = 5;
@@ -618,8 +631,272 @@ public class GUI extends JFrame {
 	}
 	
 	private void buildMealTab(Container mTab) {
-		meals = new JLabel("Meals");
-		mTab.add(meals);
+		//initialize layout and constraints
+		mTab.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(5,5,5,5);
+		
+		Dimension single = new Dimension(100,20);
+		
+		mealShortHeaders[0] = "Name";
+		mealShortHeaders[1] = "Calories";
+		mealLongHeaders[0] = "Name";
+		mealLongHeaders[1] = "Calories";
+		mealLongHeaders[2] = "Fat";
+		mealLongHeaders[3] = "Carbs";
+		mealLongHeaders[4] = "Protein";
+		
+		
+		
+		//recipeShortList
+		//display ingredients in JTable
+		mealShortModel = new DefaultTableModel(client.getShortList(), mealShortHeaders);
+		mealShortList = new JTable() {
+    				public boolean isCellEditable(int row, int column) {                
+    					return false;               
+    				};
+    		};
+    		mealShortList.setModel(recipeShortModel);
+		TableRowSorter<DefaultTableModel> sort = new TableRowSorter<DefaultTableModel>(mealShortModel);
+		mealShortList.setRowSorter(sort);
+		mealShortList.addMouseListener(new IngredientListListener());
+		mealShortList.addKeyListener(new IngredientListListener2());
+		mealShortList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		mealShortList.getColumnModel().getColumn(0).setPreferredWidth(100);
+		mealShortList.getColumnModel().getColumn(1).setPreferredWidth(70);
+		mealShortList.setPreferredScrollableViewportSize(new Dimension(170,360));
+		c.gridwidth = 1;
+		c.gridheight = 4;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+		JScrollPane scroll = new JScrollPane(mealShortList);
+		mTab.add(scroll, c);
+		
+		//mealNew button
+	    mealNew = new JButton("<html><font size=5><b>NEW</b></font></html>");
+	    mealNew.addActionListener(new IngredientListener());
+	    mealNew.setHorizontalAlignment(JTextField.CENTER);
+	    mealNew.setPreferredSize(single);
+	    mealNew.setEnabled(true);
+	    c.gridwidth = 1;
+		c.gridheight = 1;
+	    c.gridx = 1;
+	    c.gridy = 0;
+	    mTab.add(mealNew, c);
+		
+		//mealAdd button
+	    mealAdd = new JButton("<html><font size=15><b>⟹</b></font></html>");
+	    mealAdd.addActionListener(new IngredientListener());
+	    mealAdd.setHorizontalAlignment(JTextField.CENTER);
+	    mealAdd.setPreferredSize(single);
+	    mealAdd.setEnabled(false);
+	    c.gridx = 1;
+	    c.gridy = 1;
+	    mTab.add(mealAdd, c);
+	    
+		//mealRemove button
+	    mealRemove = new JButton("<html><font size=15><b>⟸</b></font></html>");
+	    mealRemove.addActionListener(new IngredientListener());
+	    mealRemove.setHorizontalAlignment(JTextField.CENTER);
+	    mealRemove.setPreferredSize(single);
+	    mealRemove.setEnabled(false);
+	    c.gridx = 1;
+	    c.gridy = 2;
+	    mTab.add(mealRemove, c);
+	    
+		//mealLoad button
+	    mealLoad = new JButton("<html><font size=5><b>LOAD</b></font></html>");
+	    mealLoad.addActionListener(new IngredientListener());
+	    mealLoad.setHorizontalAlignment(JTextField.CENTER);
+	    mealLoad.setPreferredSize(single);
+	    mealLoad.setEnabled(false);
+	    c.gridx = 1;
+	    c.gridy = 3;
+	    mTab.add(mealLoad, c);
+	    
+		//recipeRecipeList
+		//display ingredients in JTable
+	    Recipe recipeList = client.newRecipe();
+	    mealLongModel = new DefaultTableModel(recipeList.getRecipeList(), mealLongHeaders);
+	    mealLongList = new JTable() {
+    				public boolean isCellEditable(int row, int column) {                
+    					return false;               
+    				};
+    		};
+    		mealLongList.setModel(mealLongModel);
+		TableRowSorter<DefaultTableModel> sort2 = new TableRowSorter<DefaultTableModel>(mealLongModel);
+		mealLongList.setRowSorter(sort2);
+		mealLongList.addMouseListener(new IngredientListListener());
+		mealLongList.addKeyListener(new IngredientListListener2());
+		mealLongList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		mealLongList.getColumnModel().getColumn(0).setPreferredWidth(100);
+		mealLongList.getColumnModel().getColumn(1).setPreferredWidth(70);
+		mealLongList.setPreferredScrollableViewportSize(new Dimension(170,360));
+		c.gridwidth = 3;
+		c.gridheight = 4;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.gridx = 2;
+		c.gridy = 0;
+		JScrollPane scroll2 = new JScrollPane(mealLongList);
+		
+		mTab.add(scroll2, c);
+		
+		//mealName field
+		mealName = new JTextField();
+		mealName.setBorder(BorderFactory.createTitledBorder("Meal Name"));
+		mealName.setEditable(true);
+		mealName.setHorizontalAlignment(JTextField.CENTER);
+		mealName.setPreferredSize(single);
+	    c.gridwidth = 1;
+		c.gridheight = 1;
+	    c.gridx = 0;
+	    c.gridy = 4;
+	    mTab.add(mealName, c);
+	    
+		//mealType field
+	    String[] mealTypes = { "Any", "Breakfast", "Lunch", "Dinner", "Snack" };
+	    mealType = new JComboBox(mealTypes);
+	    mealType.setBorder(BorderFactory.createTitledBorder("Type"));
+	    mealType.setEditable(false);
+	    mealType.setSelectedIndex(-1);
+	    mealType.setPreferredSize(single);
+	    c.gridx = 0;
+	    c.gridy = 5;
+	    mTab.add(mealType, c);
+	    
+		//mealSubmit button
+	    mealSubmit = new JButton("<html><font size=5><b>SUBMIT</b></font></html>");
+	    //mealSubmit.setEnabled(false);
+	    mealSubmit.setHorizontalAlignment(JTextField.CENTER);
+	    mealSubmit.setPreferredSize(single);
+	    c.gridx = 0;
+	    c.gridy = 6;
+	    mTab.add(mealSubmit, c);
+	    
+		//mealCalories field
+	    mealCalories = new JTextField();
+	    mealCalories.setBorder(BorderFactory.createTitledBorder("Calories"));
+	    mealCalories.setEditable(false);
+	    mealCalories.setHorizontalAlignment(JTextField.CENTER);
+	    mealCalories.setPreferredSize(single);
+	    c.gridx = 1;
+	    c.gridy = 4;
+	    mTab.add(mealCalories, c);
+	    
+		//mealTransFat field
+	    mealTransFat = new JTextField();
+	    mealTransFat.setBorder(BorderFactory.createTitledBorder("Trans Fat (g)"));
+	    mealTransFat.setEditable(false);
+	    mealTransFat.setHorizontalAlignment(JTextField.CENTER);
+	    mealTransFat.setPreferredSize(single);
+	    c.gridx = 1;
+	    c.gridy = 5;
+	    mTab.add(mealTransFat, c);
+	    
+		//mealSatFat field
+	    mealSatFat = new JTextField();
+	    mealSatFat.setBorder(BorderFactory.createTitledBorder("Saturated Fat (g)"));
+	    mealSatFat.setEditable(false);
+	    mealSatFat.setHorizontalAlignment(JTextField.CENTER);
+	    mealSatFat.setPreferredSize(single);
+	    c.gridx = 1;
+	    c.gridy = 6;
+	    mTab.add(mealSatFat, c);
+	    
+		//mealTotalFat field
+	    mealTotalFat = new JTextField();
+	    mealTotalFat.setBorder(BorderFactory.createTitledBorder("Total Fat (g)"));
+	    mealTotalFat.setEditable(false);
+	    mealTotalFat.setHorizontalAlignment(JTextField.CENTER);
+	    mealTotalFat.setPreferredSize(single);
+	    c.gridx = 2;
+	    c.gridy = 4;
+	    mTab.add(mealTotalFat, c);
+	    
+		//mealPolyFat field
+	    mealPolyFat = new JTextField();
+	    mealPolyFat.setBorder(BorderFactory.createTitledBorder("Polyunsaturated Fat (g)"));
+	    mealPolyFat.setEditable(false);
+	    mealPolyFat.setHorizontalAlignment(JTextField.CENTER);
+	    mealPolyFat.setPreferredSize(single);
+	    c.gridx = 2;
+	    c.gridy = 5;
+	    mTab.add(mealPolyFat, c);
+	    
+		//mealMonoFat field
+	    mealMonoFat = new JTextField();
+	    mealMonoFat.setBorder(BorderFactory.createTitledBorder("Monosaturated Fat (g)"));
+	    mealMonoFat.setEditable(false);
+	    mealMonoFat.setHorizontalAlignment(JTextField.CENTER);
+	    mealMonoFat.setPreferredSize(single);
+	    c.gridx = 2;
+	    c.gridy = 6;
+	    mTab.add(mealMonoFat, c);
+	    
+		//mealCarbs field
+	    mealCarbs = new JTextField();
+	    mealCarbs.setBorder(BorderFactory.createTitledBorder("Carbs (g)"));
+	    mealCarbs.setEditable(false);
+	    mealCarbs.setHorizontalAlignment(JTextField.CENTER);
+	    mealCarbs.setPreferredSize(single);
+	    c.gridx = 3;
+	    c.gridy = 4;
+	    mTab.add(mealCarbs, c);
+	    
+		//mealFiber field
+	    mealFiber = new JTextField();
+	    mealFiber.setBorder(BorderFactory.createTitledBorder("Fiber (g)"));
+	    mealFiber.setEditable(false);
+	    mealFiber.setHorizontalAlignment(JTextField.CENTER);
+	    mealFiber.setPreferredSize(single);
+	    c.gridx = 3;
+	    c.gridy = 5;
+	    mTab.add(mealFiber, c);
+	    
+		//mealSugar field
+	    mealSugar = new JTextField();
+	    mealSugar.setBorder(BorderFactory.createTitledBorder("Sugar (g)"));
+	    mealSugar.setEditable(false);
+	    mealSugar.setHorizontalAlignment(JTextField.CENTER);
+	    mealSugar.setPreferredSize(single);
+	    c.gridx = 3;
+	    c.gridy = 6;
+	    mTab.add(mealSugar, c);
+	    
+		//mealProtein field
+	    mealProtein = new JTextField();
+	    mealProtein.setBorder(BorderFactory.createTitledBorder("Protein (g)"));
+	    mealProtein.setEditable(false);
+	    mealProtein.setHorizontalAlignment(JTextField.CENTER);
+	    mealProtein.setPreferredSize(single);
+	    c.gridx = 4;
+	    c.gridy = 4;
+	    mTab.add(mealProtein, c);
+	    
+		//mealSodium field
+	    mealSodium = new JTextField();
+	    mealSodium.setBorder(BorderFactory.createTitledBorder("Sodium (mg)"));
+	    mealSodium.setEditable(false);
+	    mealSodium.setHorizontalAlignment(JTextField.CENTER);
+	    mealSodium.setPreferredSize(single);
+	    c.gridx = 4;
+	    c.gridy = 5;
+	    mTab.add(mealSodium, c);
+	    
+		//mealPrice field
+	    mealPrice = new JTextField();
+	    mealPrice.setBorder(BorderFactory.createTitledBorder("Price per serving"));
+	    mealPrice.setEditable(false);
+	    mealPrice.setHorizontalAlignment(JTextField.CENTER);
+	    mealPrice.setPreferredSize(single);
+	    c.gridx = 4;
+	    c.gridy = 6;
+	    mTab.add(mealPrice, c);
+	    
 	}
 	
 	private void buildDayTab(Container dTab) {
