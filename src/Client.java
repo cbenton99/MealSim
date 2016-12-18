@@ -10,13 +10,13 @@ public class Client {
 	public Client() {
 		File ingredientFile = new File("Ingredients.csv");
 		Scanner in = null;
-		try { in = new Scanner(ingredientFile);
-				in.nextLine(); }
+		try { in = new Scanner(ingredientFile); }
 		catch (FileNotFoundException e) {
 			System.out.println("Error finding ingredient file");
 			e.printStackTrace();
 		}
-		
+				
+				
 		while (in.hasNextLine()) {
 			String s = in.nextLine();
 			Ingredient i = new Ingredient(s);
