@@ -1,0 +1,1 @@
+SpaghettiDinner1,1.5,2,2,1WW pasta,carbs,1,cup,220,2.5,0,0,0,0,5,45,6,1,9beef,protein,4,ounces,170,8,3,0,0,0,70,0,0,0,23tomato,veggie,1,roma,10,0,0,0,0,0,0,2,1,2,1WW bread,carbs,1,slice,80,1,0,0,0,0,150,14,2,1,4olive oil,fats,1,tablespoon,120,14,2,0,0,0,0,0,0,0,0

@@ -1,0 +1,6 @@
+Protein Shake
+Any
+1,1,1.5
+bananas,fruits,1,large,120,0,0,0,0,0,0,31,4,17,1
+oats,carbs,1,cup,610,11,2,0,0,0,0,103,17,0,26
+skim milk,protein,1,cup,90,0,0,0,0,0,135,13,0,12,8
