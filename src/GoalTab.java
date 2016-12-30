@@ -1,22 +1,8 @@
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
 
 
 public class GoalTab {
@@ -44,15 +30,13 @@ public class GoalTab {
 		c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(5,5,5,5);
 		
-		Dimension single = new Dimension(40,40);
-		Dimension slider = new Dimension(40,225);
 		
 		//goalName field
 		goalName = new JTextField();
 		goalName.setBorder(BorderFactory.createTitledBorder("Name"));
 		goalName.setEditable(true);
 		goalName.setHorizontalAlignment(JTextField.CENTER);
-		goalName.setPreferredSize(single);
+		goalName.setPreferredSize(GUI.ALT_SINGLE);
 	    c.gridwidth = 5;
 	    c.gridheight = 2;
 	    c.weightx = 1;
@@ -64,7 +48,7 @@ public class GoalTab {
 		//goalGender field
 	    ButtonGroup genderGroup = new ButtonGroup();
 	    goalGenderPanel = new JPanel(new GridBagLayout());
-	    goalGenderPanel.setPreferredSize(single);
+	    goalGenderPanel.setPreferredSize(GUI.ALT_SINGLE);
 	    GridBagConstraints c2 = new GridBagConstraints();
 	    c2.fill = GridBagConstraints.BOTH;
 	    goalMale = new JRadioButton("MALE", true);
@@ -83,7 +67,7 @@ public class GoalTab {
 		//goalGoal field
 	    ButtonGroup goalGroup = new ButtonGroup();
 	    goalGoalPanel = new JPanel(new GridBagLayout());
-	    goalGoalPanel.setPreferredSize(single);
+	    goalGoalPanel.setPreferredSize(GUI.ALT_SINGLE);
 	    
 	    goalCut = new JRadioButton("CUT", false);
 		goalMaintain = new JRadioButton("MAINTAIN", true);
@@ -117,9 +101,9 @@ public class GoalTab {
 	    goalAgeSlider.setPaintLabels(true);
 	    goalAgeSlider.setSnapToTicks(true);
 	    goalAgeSlider.setBorder(gaTitle);
-	    goalAgeSlider.setPreferredSize(slider);
+	    goalAgeSlider.setPreferredSize(GUI.STANDARD_SLIDER);
 	    c.gridwidth = 1;
-	    c.gridheight = 3;
+	    c.gridheight = 1;
 	    c.gridx = 0;
 	    c.gridy = 5;
 	    gTab.add(goalAgeSlider, c);
@@ -133,7 +117,7 @@ public class GoalTab {
 	    goalHeightSlider.setPaintLabels(true);
 	    goalHeightSlider.setSnapToTicks(true);
 	    goalHeightSlider.setBorder(ghTitle);
-	    goalHeightSlider.setPreferredSize(slider);
+	    goalHeightSlider.setPreferredSize(GUI.STANDARD_SLIDER);
 	    c.gridx = 1;
 	    c.gridy = 5;
 	    gTab.add(goalHeightSlider, c);
@@ -147,7 +131,7 @@ public class GoalTab {
 	    goalWeightSlider.setPaintLabels(true);
 	    goalWeightSlider.setSnapToTicks(true);
 	    goalWeightSlider.setBorder(gwTitle);
-	    goalWeightSlider.setPreferredSize(slider);
+	    goalWeightSlider.setPreferredSize(GUI.STANDARD_SLIDER);
 	    c.gridx = 2;
 	    c.gridy = 5;
 	    gTab.add(goalWeightSlider, c);
@@ -161,7 +145,7 @@ public class GoalTab {
 	    goalActivitySlider.setPaintLabels(true);
 	    goalActivitySlider.setSnapToTicks(true);
 	    goalActivitySlider.setBorder(gactTitle);
-	    goalActivitySlider.setPreferredSize(slider);
+	    goalActivitySlider.setPreferredSize(GUI.STANDARD_SLIDER);
 	    c.gridx = 3;
 	    c.gridy = 5;
 	    gTab.add(goalActivitySlider, c);
@@ -175,7 +159,7 @@ public class GoalTab {
 	    goalBodyFatSlider.setPaintLabels(true);
 	    goalBodyFatSlider.setSnapToTicks(true);
 	    goalBodyFatSlider.setBorder(gbfTitle);
-	    goalBodyFatSlider.setPreferredSize(slider);
+	    goalBodyFatSlider.setPreferredSize(GUI.STANDARD_SLIDER);
 	    c.gridx = 4;
 	    c.gridy = 5;
 	    gTab.add(goalBodyFatSlider, c);
@@ -184,6 +168,7 @@ public class GoalTab {
 	    //goalAgeLabel
 	    goalAgeLabel = new JLabel(Integer.toString(goalBodyFatSlider.getValue()));
 	    goalAgeLabel.setHorizontalAlignment(JLabel.CENTER);
+	    goalAgeLabel.setPreferredSize(GUI.SLIDER_LABEL);
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.gridx = 0;
@@ -193,6 +178,7 @@ public class GoalTab {
 	    //goalHeightLabel
 	    goalHeightLabel = new JLabel("6'2\"");
 	    goalHeightLabel.setHorizontalAlignment(JLabel.CENTER);
+	    goalHeightLabel.setPreferredSize(GUI.SLIDER_LABEL);
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.gridx = 1;
@@ -202,6 +188,7 @@ public class GoalTab {
 	    //goalWeightLabel
 	    goalWeightLabel = new JLabel(Integer.toString(goalWeightSlider.getValue()) + " lbs");
 	    goalWeightLabel.setHorizontalAlignment(JLabel.CENTER);
+	    goalWeightLabel.setPreferredSize(GUI.SLIDER_LABEL);
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.gridx = 2;
@@ -211,6 +198,7 @@ public class GoalTab {
 	    //goalActivityLabel
 	    goalActivityLabel = new JLabel("Moderate Activity");
 	    goalActivityLabel.setHorizontalAlignment(JLabel.CENTER);
+	    goalActivityLabel.setPreferredSize(GUI.SLIDER_LABEL);
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.gridx = 3;
@@ -220,6 +208,7 @@ public class GoalTab {
 	    //goalBodyFatLabel
 	    goalBodyFatLabel = new JLabel(Integer.toString(goalBodyFatSlider.getValue()) + "% Body Fat");
 	    goalBodyFatLabel.setHorizontalAlignment(JLabel.CENTER);
+	    goalBodyFatLabel.setPreferredSize(GUI.SLIDER_LABEL);
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.gridx = 4;
@@ -317,14 +306,14 @@ public class GoalTab {
 	
 	public class GoalSubmitListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			int g = 0;
+			boolean g = true;
 			int d = 1;
 			
 			GUI.client.getPersonalTarget().setName(goalName.getText());
 			
-			if (goalMale.isSelected()) { g = 0; }
-			else if (goalFemale.isSelected()) { g = 1; }
-			GUI.client.getPersonalTarget().setGender(g);
+			if (goalMale.isSelected()) { g = true; }
+			else if (goalFemale.isSelected()) { g = false; }
+			GUI.client.getPersonalTarget().setMale(g);
 			
 			if (goalCut.isSelected()) { d = 0; }
 			else if (goalMaintain.isSelected()) { d = 1; }

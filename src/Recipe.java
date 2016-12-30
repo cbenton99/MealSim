@@ -7,20 +7,20 @@ public class Recipe {
 	//initialize variables for recipe
 	private String name;
 	private String mealType;
-	private double calories;
-	private double totalFat;
-	private double satFat;
-	private double transFat;
-	private double polyFat;
-	private double monoFat;
-	private double carbs;
-	private double fiber;
-	private double sugar;
-	private double protien;
-	private double sodium;
-	private double price;
-	private List<Double> multipliers = new ArrayList<>();
-	private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+	private double calories = 0;
+	private double totalFat = 0;
+	private double satFat = 0;
+	private double transFat = 0;
+	private double polyFat = 0;
+	private double monoFat = 0;
+	private double carbs = 0;
+	private double fiber = 0;
+	private double sugar = 0;
+	private double protein = 0;
+	private double sodium = 0;
+	private double price = 0;
+	protected List<Double> multipliers = new ArrayList<Double>();
+	protected ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
 	
 	//void constructor
 	public Recipe() { }
@@ -68,7 +68,7 @@ public class Recipe {
 	public double getCarbs() { return this.carbs; }
 	public double getFiber() { return this.fiber; }
 	public double getSugar() { return this.sugar; }
-	public double getProtien() { return this.protien; }
+	public double getProtein() { return this.protein; }
 	public double getPrice() { return this.price; }
 	public double getMultiplier(int n) { return this.multipliers.get(n); }
 	public List<Double> getMultipliers() { return this.multipliers; }
@@ -89,12 +89,31 @@ public class Recipe {
 	public void setCarbs(int n) { this.carbs = n; }
 	public void setFiber(int n) { this.fiber = n; }
 	public void setSugar(int n) { this.sugar = n; }
-	public void setProtien(int n) { this.protien = n; }
+	public void setProtien(int n) { this.protein = n; }
 	public void setPrice(double n) { this.price = n; }
 	public void setMultipliers(String s) {
 		Scanner in = new Scanner(s).useDelimiter(",");
 		while (in.hasNextDouble()) { multipliers.add(in.nextDouble()); }
 		in.close();
+	}
+	
+	public void updateRecipe() {
+		for (int n = 0; n < ingredients.size(); n++) {
+			double multi = multipliers.get(n);
+			Ingredient i = ingredients.get(n);
+			this.calories += (i.getCalories() * multi);
+			this.totalFat += (i.getTotalFat() * multi);
+			this.carbs += (i.getCarbs() * multi);
+			this.protein += (i.getProtein() * multi);
+			this.transFat += (i.getTransFat() * multi);
+			this.polyFat += (i.getPolyFat() * multi);
+			this.fiber += (i.getFiber() * multi);
+			this.sodium += (i.getSodium() * multi);
+			this.satFat += (i.getSatFat() * multi);
+			this.monoFat += (i.getMonoFat() * multi);
+			this.sugar += (i.getSugar() * multi);
+			this.price += (i.getPrice() * multi);
+		}
 	}
 	
 	//write recipe to .TXT file

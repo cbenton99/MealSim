@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.*;
 
@@ -10,14 +11,27 @@ public class GUI extends JFrame {
 	private JTabbedPane tabs = new JTabbedPane();
 	
 	//initialize "database" (populate data)
-	protected static Client client= new Client();;
+	protected static Client client = new Client();
 	
 	//window dimensions
-	private int F_WIDTH = 1500;
-	private int F_HEIGHT = 1000;
+	private int F_WIDTH = 1600;
+	private int F_HEIGHT = 1100;
+	//container dimensions
+	protected static Dimension STANDARD_SINGLE = new Dimension(100,20);
+	protected static Dimension STANDARD_WIDE = new Dimension(100,20);
+	protected static Dimension STANDARD_TALL = new Dimension(100,20);
+	protected static Dimension STANDARD_NARROW = new Dimension(100,20);
+	protected static Dimension STANDARD_SLIDER = new Dimension(100,20);
+	protected static Dimension SLIDER_LABEL = new Dimension(100,20);
+	protected static Dimension PIE_CHART = new Dimension(100,20);
+	protected static Dimension ALT_SINGLE = new Dimension(100,20);
+	protected static Dimension ALT_TALL = new Dimension(100,20);
+	protected static Dimension ALT_NARROW = new Dimension(100,20);
 	
-	protected static Color pink = new Color(255,180,180);
-	//protected static Color yellow = new Color(255,255,180);
+	//colors and images
+	protected static Color RED = new Color(150,45,45);
+	//protected static Color YELLOW = new Color(210,195,125);
+	//protected static Color GREEN = new Color(80,170,95);
 	protected static ImageIcon leftArrow = new ImageIcon("leftArrow.png");
 	protected static ImageIcon rightArrow = new ImageIcon("rightArrow.png");
 	
@@ -44,8 +58,8 @@ public class GUI extends JFrame {
 		RecipeTab rt = new RecipeTab();
 		tabs.add("Recipes", rt.getRecipeTab());
 		
-		//MealTab mt = new MealTab();
-		//tabs.add("Meals", mt.getMealTab());
+		MealTab mt = new MealTab();
+		tabs.add("Meals", mt.getMealTab());
 		
 		DayTab dt = new DayTab();
 		tabs.add("Day Plan", dt.getDayTab());

@@ -33,7 +33,7 @@ public class Meal {
 		setName(in.nextLine());
 		setType(in.nextLine());
 		while(in.hasNextLine()) {
-			Recipe r = new Recipe(in.nextLine());
+			Recipe r = new Recipe("../Recipes/" + in.nextLine());
 			recipes.add(r);
 		}
 		in.close();

@@ -1,27 +1,8 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
 
 @SuppressWarnings("serial")
 public class IngredientTab {
@@ -37,7 +18,6 @@ public class IngredientTab {
 	private JTable ingredientList;
 	private Object[] ingredientHeaders = new Object[6];
 	private ArrayList<JTextField> ingredientTextFields = new ArrayList<JTextField>();
-
 	
 	public IngredientTab() { buildIngredientTab(this.ingredientTabPanel); }
 	
@@ -49,7 +29,7 @@ public class IngredientTab {
 		c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(5,5,5,5);
 		
-		Dimension single = new Dimension(100,20);
+		
 		
 		ingredientHeaders[0] = "Name";
 		ingredientHeaders[1] = "Type";
@@ -58,19 +38,17 @@ public class IngredientTab {
 		ingredientHeaders[4] = "Carbs";
 		ingredientHeaders[5] = "Protien";
 		
-		
-		
 		//ingredientList
 		//display ingredients in JTable
 		ingredientModel = new DefaultTableModel(GUI.client.getMacroList(), ingredientHeaders);
     		ingredientList = new JTable() {
-    				public boolean isCellEditable(int row, int column) {                
-    					return false;               
+    			public boolean isCellEditable(int row, int column) {
+    				return false;
     				};
     		};
 		ingredientList.setModel(ingredientModel);
-		TableRowSorter<DefaultTableModel> sort = new TableRowSorter<DefaultTableModel>(ingredientModel);
-		ingredientList.setRowSorter(sort);
+		TableRowSorter<DefaultTableModel> sorted = new TableRowSorter<DefaultTableModel>(ingredientModel);
+		ingredientList.setRowSorter(sorted);
 		ingredientList.addMouseListener(new iTabMouseListener());
 		ingredientList.addKeyListener(new iTabKeyListener());
 		ingredientList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,7 +66,6 @@ public class IngredientTab {
 		c.gridx = 0;
 		c.gridy = 0;
 		JScrollPane scroll = new JScrollPane(ingredientList);
-		
 		iTab.add(scroll, c);
 		
 		//ingredientName field
@@ -122,7 +99,7 @@ public class IngredientTab {
 	    ingredientBase.setBorder(BorderFactory.createTitledBorder("Base Amount"));
 	    ingredientBase.setEditable(false);
 	    ingredientBase.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientBase.setPreferredSize(single);
+	    ingredientBase.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.gridx = 1;
@@ -135,7 +112,7 @@ public class IngredientTab {
 	    ingredientMeasure.setBorder(BorderFactory.createTitledBorder("Measurement"));
 	    ingredientMeasure.setEditable(false);
 	    ingredientMeasure.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientMeasure.setPreferredSize(single);
+	    ingredientMeasure.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 2;
 	    iTab.add(ingredientMeasure, c);
@@ -146,7 +123,7 @@ public class IngredientTab {
 	    ingredientCalories.setBorder(BorderFactory.createTitledBorder("Calories"));
 	    ingredientCalories.setEditable(false);
 	    ingredientCalories.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientCalories.setPreferredSize(single);
+	    ingredientCalories.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 3;
 	    iTab.add(ingredientCalories, c);
@@ -157,7 +134,7 @@ public class IngredientTab {
 	    ingredientFat.setBorder(BorderFactory.createTitledBorder("Total Fat (g)"));
 	    ingredientFat.setEditable(false);
 	    ingredientFat.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientFat.setPreferredSize(single);
+	    ingredientFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 3;
 	    iTab.add(ingredientFat, c);
@@ -168,7 +145,7 @@ public class IngredientTab {
 	    ingredientSodium.setBorder(BorderFactory.createTitledBorder("Sodium (mg)"));
 	    ingredientSodium.setEditable(false);
 	    ingredientSodium.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientSodium.setPreferredSize(single);
+	    ingredientSodium.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 4;
 	    iTab.add(ingredientSodium, c);
@@ -179,7 +156,7 @@ public class IngredientTab {
 	    ingredientSatFat.setBorder(BorderFactory.createTitledBorder("Saturated Fat (g)"));
 	    ingredientSatFat.setEditable(false);
 	    ingredientSatFat.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientSatFat.setPreferredSize(single);
+	    ingredientSatFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 4;
 	    iTab.add(ingredientSatFat, c);
@@ -190,7 +167,7 @@ public class IngredientTab {
 	    ingredientCarbs.setBorder(BorderFactory.createTitledBorder("Carboydrates (g)"));
 	    ingredientCarbs.setEditable(false);
 	    ingredientCarbs.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientCarbs.setPreferredSize(single);
+	    ingredientCarbs.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 5;
 	    iTab.add(ingredientCarbs, c);
@@ -201,7 +178,7 @@ public class IngredientTab {
 	    ingredientTransFat.setBorder(BorderFactory.createTitledBorder("Trans Fat (g)"));
 	    ingredientTransFat.setEditable(false);
 	    ingredientTransFat.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientTransFat.setPreferredSize(single);
+	    ingredientTransFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 5;
 	    iTab.add(ingredientTransFat, c);
@@ -212,7 +189,7 @@ public class IngredientTab {
 	    ingredientFiber.setBorder(BorderFactory.createTitledBorder("Fiber (g)"));
 	    ingredientFiber.setEditable(false);
 	    ingredientFiber.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientFiber.setPreferredSize(single);
+	    ingredientFiber.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 6;
 	    iTab.add(ingredientFiber, c);
@@ -223,7 +200,7 @@ public class IngredientTab {
 	    ingredientPolyFat.setBorder(BorderFactory.createTitledBorder("Polyunsaturated Fat (g)"));
 	    ingredientPolyFat.setEditable(false);
 	    ingredientPolyFat.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientPolyFat.setPreferredSize(single);
+	    ingredientPolyFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 6;
 	    iTab.add(ingredientPolyFat, c);
@@ -234,7 +211,7 @@ public class IngredientTab {
 	    ingredientSugar.setBorder(BorderFactory.createTitledBorder("Sugar (g)"));
 	    ingredientSugar.setEditable(false);
 	    ingredientSugar.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientSugar.setPreferredSize(single);
+	    ingredientSugar.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 7;
 	    iTab.add(ingredientSugar, c);
@@ -245,7 +222,7 @@ public class IngredientTab {
 	    ingredientMonoFat.setBorder(BorderFactory.createTitledBorder("Monosaturated Fat (g)"));
 	    ingredientMonoFat.setEditable(false);
 	    ingredientMonoFat.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientMonoFat.setPreferredSize(single);
+	    ingredientMonoFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 7;
 	    iTab.add(ingredientMonoFat, c);
@@ -256,7 +233,7 @@ public class IngredientTab {
 	    ingredientProtein.setBorder(BorderFactory.createTitledBorder("Protein (g)"));
 	    ingredientProtein.setEditable(false);
 	    ingredientProtein.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientProtein.setPreferredSize(single);
+	    ingredientProtein.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 8;
 	    iTab.add(ingredientProtein, c);
@@ -266,7 +243,7 @@ public class IngredientTab {
 	    ingredientAdd = new JButton("<html><font size=5><b>ADD</b></font></html>");
 	    ingredientAdd.addActionListener(new iTabAddListener());
 	    ingredientAdd.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientAdd.setPreferredSize(single);
+	    ingredientAdd.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 9;
 	    iTab.add(ingredientAdd, c);
@@ -275,7 +252,7 @@ public class IngredientTab {
 	    ingredientEdit = new JButton("<html><font size=5><b>EDIT</b></font></html>");
 	    ingredientEdit.addActionListener(new iTabEditListener());
 	    ingredientEdit.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientEdit.setPreferredSize(single);
+	    ingredientEdit.setPreferredSize(GUI.STANDARD_SINGLE);
 	    ingredientEdit.setEnabled(false);
 	    c.gridx = 2;
 	    c.gridy = 9;
@@ -285,7 +262,7 @@ public class IngredientTab {
 	    ingredientDelete = new JButton("<html><font size=5><b>DELETE</b></font></html>");
 	    ingredientDelete.addActionListener(new iTabDeleteListener());
 	    ingredientDelete.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientDelete.setPreferredSize(single);
+	    ingredientDelete.setPreferredSize(GUI.STANDARD_SINGLE);
 	    ingredientDelete.setEnabled(false);
 	    c.gridx = 1;
 	    c.gridy = 10;
@@ -295,21 +272,18 @@ public class IngredientTab {
 	    ingredientUpdate = new JButton("<html><font size=5><b>UPDATE</b></font></html>");
 	    ingredientUpdate.addActionListener(new iTabUpdateListener());
 	    ingredientUpdate.setHorizontalAlignment(JTextField.CENTER);
-	    ingredientUpdate.setPreferredSize(single);
+	    ingredientUpdate.setPreferredSize(GUI.STANDARD_SINGLE);
 	    ingredientUpdate.setEnabled(false);
 	    c.gridx = 2;
 	    c.gridy = 10;
 	    iTab.add(ingredientUpdate, c);
-		
 	}
-	
-	
-	
-	
 	
 	//listener for when ingredient is clicked in iTab
 	private class iTabMouseListener implements MouseListener {
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) { }
+		public void mousePressed(MouseEvent e) { }
+		public void mouseReleased(MouseEvent e) {
 			if (ingredientList.isEnabled()) {
 				int row = ingredientList.convertRowIndexToModel(ingredientList.rowAtPoint(e.getPoint()));
 				setIngredientTextFields(row);
@@ -321,8 +295,6 @@ public class IngredientTab {
 				}
 			}
 		}
-		public void mousePressed(MouseEvent e) { }
-		public void mouseReleased(MouseEvent e) { }
 		public void mouseEntered(MouseEvent e) { }
 		public void mouseExited(MouseEvent e) { }
 	}
@@ -342,7 +314,7 @@ public class IngredientTab {
 		}
 	}
 	
-	//listener for add/delete/edit/update buttons in iTab
+	//add/submit ingredients
 	private class iTabAddListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//add ingredient to ingredientList in iTab
@@ -352,10 +324,10 @@ public class IngredientTab {
 					ingredientDelete.setEnabled(false);
 					ingredientEdit.setEnabled(false);
 					ingredientList.setEnabled(false);
-					//ingredientList.setCellSelectionEnabled(false);
 					setIngredientEditable(true);
 					ingredientAdd.setText("<html><font size = 5><b>SUBMIT</b></font></html>");
 				}
+				//submit ingredient to ingredientList in iTab
 				else if (e.getSource().toString().contains("SUBMIT")) {
 					boolean canSubmit = validateIngredientSubmission();
 					if (canSubmit) {
@@ -385,10 +357,10 @@ public class IngredientTab {
 			int row = ingredientList.getSelectedRow();
 			int length = GUI.client.getIngredientsLength();
 			if (row >= 0) {
-				int sortedRow = ingredientList.convertRowIndexToModel(row);
-				GUI.client.removeIngredient(GUI.client.getIngredientsIndex(sortedRow));
-				ingredientModel.removeRow(sortedRow);
-				//adjust row if deleting last row
+				int sorted = ingredientList.convertRowIndexToModel(row);
+				GUI.client.removeIngredient(GUI.client.getIngredientsIndex(sorted));
+				ingredientModel.removeRow(sorted);
+				//adjust row if deleting last row of list
 				if (row == GUI.client.getIngredientsLength()) { row--; }
 				//set selected row to new row
 				if (length > 1) {
@@ -430,13 +402,8 @@ public class IngredientTab {
 			if (canSubmit) {
 				Ingredient i = GUI.client.getIngredientsIndex(sorted);
 				updateIngredient(i);
-				try { 
-					//i.getFile().delete();
-					System.out.println("original: " + i.getFile().getName());
-					
-					GUI.client.updateIngredient(i);
-
-				}
+				
+				try { GUI.client.updateIngredient(i); }
 				catch (Exception e2) {
 					System.out.println("Error updating ingredient from rTab");
 					e2.printStackTrace();
@@ -452,6 +419,15 @@ public class IngredientTab {
 				setIngredientEditable(false);
 			}
 		}
+	}
+	
+	public void updateIngredientList(int row) {
+		ingredientModel.setValueAt(ingredientName.getText(), row, 0);
+		ingredientModel.setValueAt(ingredientType.getText(), row, 1);
+		ingredientModel.setValueAt(ingredientCalories.getText(), row, 2);
+		ingredientModel.setValueAt(ingredientFat.getText(), row, 3);
+		ingredientModel.setValueAt(ingredientCarbs.getText(), row, 4);
+		ingredientModel.setValueAt(ingredientProtein.getText(), row, 5);
 	}
 	
 	public Ingredient createIngredient() {
@@ -475,7 +451,6 @@ public class IngredientTab {
 	}
 	
 	public void updateIngredient(Ingredient i) {
-		//i.setFileName(ingredientName.getText().trim() + ".txt");
 		i.setName(ingredientName.getText().trim());
 		i.setType(ingredientType.getText().trim());
 		i.setBaseAmount(Double.parseDouble(ingredientBase.getText()));
@@ -554,7 +529,7 @@ public class IngredientTab {
 		for (JTextField field : ingredientTextFields) {
 			String s = field.getText().trim();
 			if (( field.equals(this.ingredientType) || field.equals(this.ingredientMeasure)) && s.isEmpty()) {
-				field.setBackground(GUI.pink);
+				field.setBackground(GUI.RED);
 				temp = false;
 			}
 			else if ((field.equals(this.ingredientName) || field.equals(this.ingredientType) || 
@@ -562,7 +537,7 @@ public class IngredientTab {
 					field.setBackground(Color.WHITE);
 			}
 			else if (!isNumeric(s)) {
-				field.setBackground(GUI.pink);
+				field.setBackground(GUI.RED);
 				temp = false;
 			}
 			else if (isNumeric(s)) {
@@ -572,21 +547,10 @@ public class IngredientTab {
 		return temp;
 	}
 	
-	public void updateIngredientList(int row) {
-		ingredientModel.setValueAt(ingredientName.getText(), row, 0);
-		ingredientModel.setValueAt(ingredientType.getText(), row, 1);
-		ingredientModel.setValueAt(ingredientCalories.getText(), row, 2);
-		ingredientModel.setValueAt(ingredientFat.getText(), row, 3);
-		ingredientModel.setValueAt(ingredientCarbs.getText(), row, 4);
-		ingredientModel.setValueAt(ingredientProtein.getText(), row, 5);
-	}
-	
 	public boolean isNumeric(String s) {  
 		if (s.isEmpty()) { return false; }
 	    return s.matches("[+]?\\d*\\.?\\d*");  
 	}  
-	
-	
 	
 	public JPanel getIngredientTab() { return this.ingredientTabPanel; }
 	

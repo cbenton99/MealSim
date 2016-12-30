@@ -47,7 +47,6 @@ public class Ingredient {
 	
 	//convert string to Ingredient data
 	public void createIngredient(String s) {
-		
 		Scanner in = new Scanner(s).useDelimiter(",");
 		
 		this.name = in.next();
@@ -65,7 +64,7 @@ public class Ingredient {
 		this.fiber = in.nextDouble();
 		this.sugar = in.nextDouble();
 		this.protein = in.nextDouble();
-		file = new File(getName() + ".txt");
+		this.file = new File(getName() + ".txt");
 				
 		in.close();
 	}
@@ -94,7 +93,7 @@ public class Ingredient {
 	//////////////////
 	//setter methods//
 	//////////////////
-	public void setFile(File f) { this.file = f; }
+	public void setFile(String s) { this.file = new File(s); }
 	public void setName(String s) { this.name = s; }
 	public void setType(String s) { this.type = s; }
 	public void setBaseAmount(double n) { this.baseAmount = n; }
@@ -146,12 +145,22 @@ public class Ingredient {
 		return arr;
 	}
 	
+	//return short item info for mealSelectList in GUI
+	public Object[] toCaloriesArray() {
+		Object[] arr = new Object[2];
+		arr[0] = getName();
+		arr[1] = getCalories();
+			
+		return arr;
+	}
+	
 	//write ingredient to .TXT file
 	public void saveToTXT() {
 		File file = new File(getName() + ".txt");
 		try { 
 			PrintWriter out = new PrintWriter("Ingredients/" + file.getName());
 			out.write(toString());
+			setFile(file.getName());
 			out.close();
 		}
 		catch (FileNotFoundException e) {
@@ -176,7 +185,8 @@ public class Ingredient {
 		System.out.println(i.getName());
 		System.out.println(i.getType());
 		System.out.println(i);
-		System.out.println(i.getFile());
+		//System.out.println(i.getFile());
+		
 	}
 	
 }

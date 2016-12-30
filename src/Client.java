@@ -7,6 +7,7 @@ public class Client {
 	private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
 	private ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 	private ArrayList<Meal> meals = new ArrayList<Meal>();
+	Recipe currentRecipe = new Recipe();
 	private PersonalTarget pt;
 	
 	//create "database" of ingredients/recipes/meals/etc
@@ -39,7 +40,6 @@ public class Client {
 		}
 	}
 
-	
 	public Ingredient getIngredientsIndex(int n) { return ingredients.get(n); }
 	public int getIngredientsLength() { return ingredients.size(); }
 	public ArrayList<Ingredient> getIngredients() { return ingredients; }
@@ -51,16 +51,14 @@ public class Client {
 	
 	public void removeIngredient(Ingredient i) {
 		ingredients.remove(i);
-		File file = new File("Ingredients/" + i.getFile());
+		File file = new File("Ingredients/" + i.getFile().getName());
 		file.delete();
 	}
 	
 	public void updateIngredient(Ingredient i) {
-		File file = new File("Ingredients/" + i.getFile().getName());
-		System.out.println("client delete: " + file.getAbsolutePath());
+		File file = new File("Ingredients/" + i.getFile());
 		file.delete();
-		i.saveToTXT();
-		System.out.println("client: " + i.getFile().getAbsolutePath());
+		i.saveToTXT();		
 	}
 	
 	public Object[][] getMacroList() { 
@@ -87,6 +85,14 @@ public class Client {
 		return arr;
 	}
 	
+	public Object[][] getCaloriesList() { 
+		Object[][] arr = new Object[ingredients.size()][];
+		for(int i=0; i<ingredients.size(); i++) {
+			arr[i] = ingredients.get(i).toCaloriesArray();
+		}
+		return arr;
+	}
+	
 	//////////////////
 	//////Recipes/////
 	//////////////////
@@ -109,6 +115,10 @@ public class Client {
 	}
 	
 	public ArrayList<Recipe> getRecipes() { return recipes; }
+	public void addIngredientToRecipe(Ingredient i) { currentRecipe.getIngredients().add(i); }
+	public int getCurrentRecipeLength() { return currentRecipe.ingredients.size(); }
+	public Ingredient getIngredientFromRecipe(int n) { return currentRecipe.ingredients.get(n); }
+	public void removeIngredientFromRecipe(Ingredient i) { currentRecipe.ingredients.remove(i); }
 	
 	public void addRecipe(Recipe r) { recipes.add(r); }
 	public void removeRecipe(Recipe r) { ingredients.remove(r); }

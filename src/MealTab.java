@@ -22,13 +22,10 @@ public class MealTab {
 	@SuppressWarnings("rawtypes")
 	private JComboBox mealType;
 	private JButton mealNew, mealAdd, mealRemove, mealLoad, mealSubmit;
-	private DefaultTableModel recipeShortModel, mealShortModel, mealLongModel;
+	private DefaultTableModel mealShortModel, mealLongModel;
 	private JTable mealShortList, mealLongList;
 	private Object[] mealShortHeaders = new Object[2];
 	private Object[] mealLongHeaders = new Object[5];
-	
-	ImageIcon leftArrow = new ImageIcon("leftArrow.png");
-	ImageIcon rightArrow = new ImageIcon("rightArrow.png");
 	
 	
 	public MealTab() { buildMealTab(this.mealTabPanel); }
@@ -42,7 +39,6 @@ public class MealTab {
 		c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(5,5,5,5);
 		
-		Dimension single = new Dimension(100,20);
 		
 		mealShortHeaders[0] = "Name";
 		mealShortHeaders[1] = "Calories";
@@ -56,13 +52,13 @@ public class MealTab {
 		
 		//recipeShortList
 		//display ingredients in JTable
-		mealShortModel = new DefaultTableModel(GUI.client.getShortList(), mealShortHeaders);
+		mealShortModel = new DefaultTableModel(GUI.client.getCaloriesList(), mealShortHeaders);
 		mealShortList = new JTable() {
     				public boolean isCellEditable(int row, int column) {                
     					return false;               
     				};
     		};
-    		mealShortList.setModel(recipeShortModel);
+    		mealShortList.setModel(mealShortModel);
 		TableRowSorter<DefaultTableModel> sort = new TableRowSorter<DefaultTableModel>(mealShortModel);
 		mealShortList.setRowSorter(sort);
 		mealShortList.addMouseListener(new IngredientListListener());
@@ -84,7 +80,7 @@ public class MealTab {
 	    mealNew = new JButton("<html><font size=5><b>NEW</b></font></html>");
 	    mealNew.addActionListener(new IngredientListener());
 	    mealNew.setHorizontalAlignment(JTextField.CENTER);
-	    mealNew.setPreferredSize(single);
+	    mealNew.setPreferredSize(GUI.STANDARD_SINGLE);
 	    mealNew.setEnabled(true);
 	    c.gridwidth = 1;
 		c.gridheight = 1;
@@ -93,20 +89,20 @@ public class MealTab {
 	    mTab.add(mealNew, c);
 		
 		//mealAdd button
-	    mealAdd = new JButton(rightArrow);
+	    mealAdd = new JButton(GUI.rightArrow);
 	    mealAdd.addActionListener(new IngredientListener());
 	    mealAdd.setHorizontalAlignment(JTextField.CENTER);
-	    mealAdd.setPreferredSize(single);
+	    mealAdd.setPreferredSize(GUI.STANDARD_SINGLE);
 	    mealAdd.setEnabled(false);
 	    c.gridx = 1;
 	    c.gridy = 1;
 	    mTab.add(mealAdd, c);
 	    
 		//mealRemove button
-	    mealRemove = new JButton(leftArrow);
+	    mealRemove = new JButton(GUI.leftArrow);
 	    mealRemove.addActionListener(new IngredientListener());
 	    mealRemove.setHorizontalAlignment(JTextField.CENTER);
-	    mealRemove.setPreferredSize(single);
+	    mealRemove.setPreferredSize(GUI.STANDARD_SINGLE);
 	    mealRemove.setEnabled(false);
 	    c.gridx = 1;
 	    c.gridy = 2;
@@ -116,7 +112,7 @@ public class MealTab {
 	    mealLoad = new JButton("<html><font size=5><b>LOAD</b></font></html>");
 	    mealLoad.addActionListener(new IngredientListener());
 	    mealLoad.setHorizontalAlignment(JTextField.CENTER);
-	    mealLoad.setPreferredSize(single);
+	    mealLoad.setPreferredSize(GUI.STANDARD_SINGLE);
 	    mealLoad.setEnabled(false);
 	    c.gridx = 1;
 	    c.gridy = 3;
@@ -154,7 +150,7 @@ public class MealTab {
 		mealName.setBorder(BorderFactory.createTitledBorder("Meal Name"));
 		mealName.setEditable(true);
 		mealName.setHorizontalAlignment(JTextField.CENTER);
-		mealName.setPreferredSize(single);
+		mealName.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridwidth = 1;
 		c.gridheight = 1;
 	    c.gridx = 0;
@@ -167,7 +163,7 @@ public class MealTab {
 	    mealType.setBorder(BorderFactory.createTitledBorder("Type"));
 	    mealType.setEditable(false);
 	    mealType.setSelectedIndex(-1);
-	    mealType.setPreferredSize(single);
+	    mealType.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 0;
 	    c.gridy = 5;
 	    mTab.add(mealType, c);
@@ -176,7 +172,7 @@ public class MealTab {
 	    mealSubmit = new JButton("<html><font size=5><b>SUBMIT</b></font></html>");
 	    //mealSubmit.setEnabled(false);
 	    mealSubmit.setHorizontalAlignment(JTextField.CENTER);
-	    mealSubmit.setPreferredSize(single);
+	    mealSubmit.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 0;
 	    c.gridy = 6;
 	    mTab.add(mealSubmit, c);
@@ -186,7 +182,7 @@ public class MealTab {
 	    mealCalories.setBorder(BorderFactory.createTitledBorder("Calories"));
 	    mealCalories.setEditable(false);
 	    mealCalories.setHorizontalAlignment(JTextField.CENTER);
-	    mealCalories.setPreferredSize(single);
+	    mealCalories.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 4;
 	    mTab.add(mealCalories, c);
@@ -196,7 +192,7 @@ public class MealTab {
 	    mealTransFat.setBorder(BorderFactory.createTitledBorder("Trans Fat (g)"));
 	    mealTransFat.setEditable(false);
 	    mealTransFat.setHorizontalAlignment(JTextField.CENTER);
-	    mealTransFat.setPreferredSize(single);
+	    mealTransFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 5;
 	    mTab.add(mealTransFat, c);
@@ -206,7 +202,7 @@ public class MealTab {
 	    mealSatFat.setBorder(BorderFactory.createTitledBorder("Saturated Fat (g)"));
 	    mealSatFat.setEditable(false);
 	    mealSatFat.setHorizontalAlignment(JTextField.CENTER);
-	    mealSatFat.setPreferredSize(single);
+	    mealSatFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 1;
 	    c.gridy = 6;
 	    mTab.add(mealSatFat, c);
@@ -216,7 +212,7 @@ public class MealTab {
 	    mealTotalFat.setBorder(BorderFactory.createTitledBorder("Total Fat (g)"));
 	    mealTotalFat.setEditable(false);
 	    mealTotalFat.setHorizontalAlignment(JTextField.CENTER);
-	    mealTotalFat.setPreferredSize(single);
+	    mealTotalFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 4;
 	    mTab.add(mealTotalFat, c);
@@ -226,7 +222,7 @@ public class MealTab {
 	    mealPolyFat.setBorder(BorderFactory.createTitledBorder("Polyunsaturated Fat (g)"));
 	    mealPolyFat.setEditable(false);
 	    mealPolyFat.setHorizontalAlignment(JTextField.CENTER);
-	    mealPolyFat.setPreferredSize(single);
+	    mealPolyFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 5;
 	    mTab.add(mealPolyFat, c);
@@ -236,7 +232,7 @@ public class MealTab {
 	    mealMonoFat.setBorder(BorderFactory.createTitledBorder("Monosaturated Fat (g)"));
 	    mealMonoFat.setEditable(false);
 	    mealMonoFat.setHorizontalAlignment(JTextField.CENTER);
-	    mealMonoFat.setPreferredSize(single);
+	    mealMonoFat.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 2;
 	    c.gridy = 6;
 	    mTab.add(mealMonoFat, c);
@@ -246,7 +242,7 @@ public class MealTab {
 	    mealCarbs.setBorder(BorderFactory.createTitledBorder("Carbs (g)"));
 	    mealCarbs.setEditable(false);
 	    mealCarbs.setHorizontalAlignment(JTextField.CENTER);
-	    mealCarbs.setPreferredSize(single);
+	    mealCarbs.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 3;
 	    c.gridy = 4;
 	    mTab.add(mealCarbs, c);
@@ -256,7 +252,7 @@ public class MealTab {
 	    mealFiber.setBorder(BorderFactory.createTitledBorder("Fiber (g)"));
 	    mealFiber.setEditable(false);
 	    mealFiber.setHorizontalAlignment(JTextField.CENTER);
-	    mealFiber.setPreferredSize(single);
+	    mealFiber.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 3;
 	    c.gridy = 5;
 	    mTab.add(mealFiber, c);
@@ -266,7 +262,7 @@ public class MealTab {
 	    mealSugar.setBorder(BorderFactory.createTitledBorder("Sugar (g)"));
 	    mealSugar.setEditable(false);
 	    mealSugar.setHorizontalAlignment(JTextField.CENTER);
-	    mealSugar.setPreferredSize(single);
+	    mealSugar.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 3;
 	    c.gridy = 6;
 	    mTab.add(mealSugar, c);
@@ -276,7 +272,7 @@ public class MealTab {
 	    mealProtein.setBorder(BorderFactory.createTitledBorder("Protein (g)"));
 	    mealProtein.setEditable(false);
 	    mealProtein.setHorizontalAlignment(JTextField.CENTER);
-	    mealProtein.setPreferredSize(single);
+	    mealProtein.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 4;
 	    c.gridy = 4;
 	    mTab.add(mealProtein, c);
@@ -286,7 +282,7 @@ public class MealTab {
 	    mealSodium.setBorder(BorderFactory.createTitledBorder("Sodium (mg)"));
 	    mealSodium.setEditable(false);
 	    mealSodium.setHorizontalAlignment(JTextField.CENTER);
-	    mealSodium.setPreferredSize(single);
+	    mealSodium.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 4;
 	    c.gridy = 5;
 	    mTab.add(mealSodium, c);
@@ -296,7 +292,7 @@ public class MealTab {
 	    mealPrice.setBorder(BorderFactory.createTitledBorder("Price per serving"));
 	    mealPrice.setEditable(false);
 	    mealPrice.setHorizontalAlignment(JTextField.CENTER);
-	    mealPrice.setPreferredSize(single);
+	    mealPrice.setPreferredSize(GUI.STANDARD_SINGLE);
 	    c.gridx = 4;
 	    c.gridy = 6;
 	    mTab.add(mealPrice, c);
